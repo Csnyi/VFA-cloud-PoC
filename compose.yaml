@@ -1,0 +1,70 @@
+services:
+  policy-server:
+    build: ./policy-server
+    container_name: vfa-policy-server
+    environment:
+      VFA_HMAC_SECRET: ${VFA_HMAC_SECRET}
+      VFA_TOKEN_TTL_SECONDS: ${VFA_TOKEN_TTL_SECONDS:-300}
+      VFA_SESSION_TTL_SECONDS: ${VFA_SESSION_TTL_SECONDS:-300}
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  vfa-gateway:
+    build: ./vfa-gateway
+    container_name: vfa-gateway
+    environment:
+      POLICY_SERVER_BASE: http://policy-server:5000
+      DEPLOY_TARGET_BASE: http://deploy-target:5001
+      SANDBOX_TARGET_BASE: http://sandbox-target:5002
+    ports:
+      - "7000:7000"
+    depends_on:
+      policy-server:
+        condition: service_healthy
+      deploy-target:
+        condition: service_healthy
+      sandbox-target:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:7000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  deploy-target:
+    build: ./deploy-target
+    container_name: vfa-deploy-target
+    ports:
+      - "5001:5001"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5001/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  sandbox-target:
+    build: ./sandbox-target
+    container_name: vfa-sandbox-target
+    ports:
+      - "5002:5002"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5002/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  wallet:
+    image: nginx:alpine
+    container_name: vfa-wallet
+    ports:
+      - "8080:80"
+    volumes:
+      - ./wallet:/usr/share/nginx/html:ro
+    depends_on:
+      policy-server:
+        condition: service_healthy

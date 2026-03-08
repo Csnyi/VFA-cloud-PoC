@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="hu">
+
+<head>
+  <meta charset="utf-8">
+  <title>VFA Visual Demo Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="demo.css">
+</head>
+
+<body>
+  <div class="wrap">
+    <h1>VFA Visual Demo Dashboard</h1>
+    <p class="lead">
+      Presence → Negotiation → Intent → Visa → Routing.
+      A wallet approve/reject után azonnal visszajelez a dashboardnak.
+    </p>
+
+    <div class="toolbar">
+      <button id="btnSandbox">1. Sandbox demo</button>
+      <button id="btnDeny">2. Deny demo</button>
+      <button id="btnProd" class="primary">3. Production demo</button>
+      <button id="btnApprove" disabled>Wallet approve itt</button>
+      <button id="btnOpenWallet" disabled>Wallet megnyitása</button>
+      <button id="btnReset">Reset</button>
+    </div>
+
+    <div class="subtoolbar">
+      <span class="badge"><span class="dot" style="background:#6ea8ff"></span> Gateway:
+        <span>http://localhost:7000</span></span>
+      <span class="badge"><span class="dot" style="background:#2ecc71"></span> Policy:
+        <span>http://localhost:5000</span></span>
+      <span class="badge"><span class="dot" style="background:#f1c40f"></span> Wallet:
+        <span>http://localhost:8080</span></span>
+    </div>
+
+    <div class="statusbar">
+      <span class="badge"><span class="dot" id="dotMode" style="background:#6ea8ff"></span>Mód: <strong
+          id="modeLabel">—</strong></span>
+      <span class="badge"><span class="dot" id="dotDecision" style="background:#6ea8ff"></span>Gateway döntés: <strong
+          id="decisionLabel">—</strong></span>
+      <span class="badge"><span class="dot" id="dotNegotiation" style="background:#6ea8ff"></span>Negotiation: <strong
+          id="negotiationLabel">—</strong></span>
+      <span class="badge"><span class="dot" id="dotVisa" style="background:#6ea8ff"></span>Visa: <strong
+          id="visaLabel">—</strong></span>
+    </div>
+
+    <div class="layout">
+      <div class="panel flow">
+        <svg class="lines" viewBox="0 0 1200 620" preserveAspectRatio="none" aria-hidden="true">
+          <path id="lineClientGateway" class="pulse" d="M195 120 L395 120" />
+          <path id="lineGatewayPolicy" class="pulse" d="M595 120 L795 120" />
+          <path id="linePolicyWallet" class="pulse" d="M895 170 L1040 300" />
+          <path id="lineWalletPolicy" class="pulse" d="M1040 340 L895 215" />
+          <path id="lineGatewayProd" class="pulse" d="M495 190 L495 350" />
+          <path id="lineGatewaySandbox" class="pulse" d="M495 190 L195 350" />
+        </svg>
+
+        <div class="flow-grid">
+          <div class="node" id="nodeClient">
+            <div class="role">client</div>
+            <h3>Browser Demo</h3>
+            <div class="meta">VFA presence kérés
+              Deploy intent
+              UI-vezérelt flow</div>
+          </div>
+
+          <div class="node" id="nodeGateway">
+            <div class="role">l3.5 overlay</div>
+            <h3>VFA Gateway</h3>
+            <div class="meta">Policy döntés:
+              sandbox / deny / production</div>
+          </div>
+
+          <div class="node" id="nodePolicy">
+            <div class="role">policy</div>
+            <h3>Policy Server</h3>
+            <div class="meta">Session
+              Intent
+              Visa kiadás
+              Verify</div>
+          </div>
+
+          <div class="node" id="nodeSandbox">
+            <div class="role">fallback</div>
+            <h3>Sandbox Target</h3>
+            <div class="meta">Nincs VFA vagy fallback út</div>
+          </div>
+
+          <div class="node" id="nodeProd">
+            <div class="role">protected</div>
+            <h3>Production Target</h3>
+            <div class="meta">Valid visa esetén továbbengedve</div>
+          </div>
+
+          <div class="node" id="nodeWallet">
+            <div class="role">approval</div>
+            <h3>Wallet</h3>
+            <div class="meta">Approve / Reject
+              Emberi jóváhagyás</div>
+          </div>
+        </div>
+        <!-- Protocol monitor -->
+        <div class="proto-panel">
+          <div class="proto-state">
+            <strong>STATE:</strong>
+            <span id="protoState">IDLE</span>
+          </div>
+        
+          <div class="proto-actors">
+            <div class="actor" id="actor-client">Client</div>
+            <div class="actor" id="actor-gateway">Gateway</div>
+            <div class="actor" id="actor-policy">Policy</div>
+            <div class="actor" id="actor-wallet">Wallet</div>
+            <div class="actor" id="actor-production">Production</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel log">
+        <div class="kv">
+          <div>Session ID</div>
+          <div id="sessionId">—</div>
+          <div>Intent ID</div>
+          <div id="intentId">—</div>
+          <div>Wallet URL</div>
+          <div id="walletUrl">—</div>
+          <div>Commit</div>
+          <div id="commitValue">web-demo</div>
+          <div>Service</div>
+          <div id="serviceValue">payments-api</div>
+          <div>Environment</div>
+          <div id="envValue">production</div>
+        </div>
+
+        <div class="console" id="console">Készen áll. Indíts egy demo módot.</div>
+
+        <details open>
+          <summary>Nyers utolsó válasz</summary>
+          <div class="console" id="jsonBox">{}</div>
+        </details>
+
+        <details>
+          <summary>Használat</summary>
+          <div class="hint">
+            Sandbox demo: nincs VFA session → gateway sandboxba route-ol.<br>
+            Deny demo: van VFA session, de nincs visa → gateway tilt.<br>
+            Production demo: session + intent után nyisd meg a walletet, majd approve vagy reject.<br>
+            A dashboard eseményvezérelten reagál, polling nélkül.
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="demo.js"></script>
+
+</body>
+
+</html>

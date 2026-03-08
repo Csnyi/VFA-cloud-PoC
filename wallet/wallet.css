@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 860px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+button {
+    padding: 0.7rem 1rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: #f6f6f6;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.muted {
+    color: #666;
+}
+
+.card.approved {
+    border-color: #2ecc71;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
+}
+
+.card.rejected {
+    border-color: #e74c3c;
+    box-shadow: 0 0 10px rgba(231, 76, 60, 0.4);
+}
+
+#walletStatus {
+    font-weight: bold;
+    margin-top: 0.8rem;
+}
+
+.status-approved {
+    color: #2ecc71;
+}
+
+.status-rejected {
+    color: #e74c3c;
+}

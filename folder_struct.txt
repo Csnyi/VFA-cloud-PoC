@@ -1,0 +1,21 @@
+vfa-cloud-poc/
+├─ compose.yaml
+├─ .env
+├─ README.md
+├─ policy-server/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ app.py
+├─ vfa-gateway/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ app.py
+├─ deploy-target/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ app.py
+├─ wallet/
+│  ├─ index.html
+│  └─ wallet.js
+└─ demo-client/
+   └─ run_demo.sh
