@@ -244,11 +244,11 @@ button:disabled {
 }
 /*--------protocol monitor------------*/
 .proto-panel {
-    border: 1px solid #ccc;
+    border: 1px solid rgba(110, 168, 255, .18);
     border-radius: 10px;
     padding: 12px;
     margin: 12px 0;
-    background: #000000;
+    background: var(--bg);
 }
 
 .proto-state {
@@ -262,7 +262,7 @@ button:disabled {
     margin-left: 6px;
     padding: 2px 8px;
     border-radius: 6px;
-    background: #000000;
+    background: var(--panel2);
     font-weight: bold;
 }
 
@@ -276,7 +276,7 @@ button:disabled {
     padding: 8px 12px;
     border: 1px solid #bbb;
     border-radius: 8px;
-    background: #1e1054;
+    background: var(--panel);
     font-family: monospace;
     min-width: 90px;
     text-align: center;
