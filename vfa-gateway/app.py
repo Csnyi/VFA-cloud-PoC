@@ -72,21 +72,21 @@ def deploy():
     commit = data.get("commit")
     requested_by = data.get("requestedBy", "demo-client")
 
-    # 1) nincs session -> sandbox
+    # 1) no session → sandbox
     if not session_id:
         return route_to_sandbox(data, "missing_session_id")
 
     session = fetch_session(session_id)
 
-    # 2) ismeretlen session -> sandbox
+    # 2) unknown session → sandbox
     if not session:
         return route_to_sandbox(data, "unknown_session")
 
-    # 3) nincs VFA elfogadva -> sandbox
+    # 3) VFA not accepted → sandbox
     if not session.get("vfaAccepted"):
         return route_to_sandbox(data, "vfa_not_accepted", session=session)
 
-    # 4) van VFA session, de nincs token -> deny
+    # 4) VFA session exists but no token → deny
     if not token:
         return jsonify({
             "ok": False,

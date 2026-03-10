@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="hu">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -13,15 +13,15 @@
     <h1>VFA Visual Demo Dashboard</h1>
     <p class="lead">
       Presence → Negotiation → Intent → Visa → Routing.
-      A wallet approve/reject után azonnal visszajelez a dashboardnak.
+      The dashboard responds immediately after a wallet approve or reject.
     </p>
 
     <div class="toolbar">
       <button id="btnSandbox">1. Sandbox demo</button>
       <button id="btnDeny">2. Deny demo</button>
       <button id="btnProd" class="primary">3. Production demo</button>
-      <button id="btnApprove" disabled>Wallet approve itt</button>
-      <button id="btnOpenWallet" disabled>Wallet megnyitása</button>
+      <button id="btnApprove" disabled>Approve here</button>
+      <button id="btnOpenWallet" disabled>Open wallet</button>
       <button id="btnReset">Reset</button>
     </div>
 
@@ -35,9 +35,9 @@
     </div>
 
     <div class="statusbar">
-      <span class="badge"><span class="dot" id="dotMode" style="background:#6ea8ff"></span>Mód: <strong
+      <span class="badge"><span class="dot" id="dotMode" style="background:#6ea8ff"></span>Mode: <strong
           id="modeLabel">—</strong></span>
-      <span class="badge"><span class="dot" id="dotDecision" style="background:#6ea8ff"></span>Gateway döntés: <strong
+      <span class="badge"><span class="dot" id="dotDecision" style="background:#6ea8ff"></span>Gateway decision: <strong
           id="decisionLabel">—</strong></span>
       <span class="badge"><span class="dot" id="dotNegotiation" style="background:#6ea8ff"></span>Negotiation: <strong
           id="negotiationLabel">—</strong></span>
@@ -60,15 +60,15 @@
           <div class="node" id="nodeClient">
             <div class="role">client</div>
             <h3>Browser Demo</h3>
-            <div class="meta">VFA presence kérés
+            <div class="meta">VFA presence request
               Deploy intent
-              UI-vezérelt flow</div>
+              UI-driven flow</div>
           </div>
 
           <div class="node" id="nodeGateway">
             <div class="role">l3.5 overlay</div>
             <h3>VFA Gateway</h3>
-            <div class="meta">Policy döntés:
+            <div class="meta">Policy decision:
               sandbox / deny / production</div>
           </div>
 
@@ -77,27 +77,27 @@
             <h3>Policy Server</h3>
             <div class="meta">Session
               Intent
-              Visa kiadás
+              Visa issuance
               Verify</div>
           </div>
 
           <div class="node" id="nodeSandbox">
             <div class="role">fallback</div>
             <h3>Sandbox Target</h3>
-            <div class="meta">Nincs VFA vagy fallback út</div>
+            <div class="meta">No VFA session or fallback route</div>
           </div>
 
           <div class="node" id="nodeProd">
             <div class="role">protected</div>
             <h3>Production Target</h3>
-            <div class="meta">Valid visa esetén továbbengedve</div>
+            <div class="meta">Allowed through on valid visa</div>
           </div>
 
           <div class="node" id="nodeWallet">
             <div class="role">approval</div>
             <h3>Wallet</h3>
             <div class="meta">Approve / Reject
-              Emberi jóváhagyás</div>
+              Explicit human approval</div>
           </div>
         </div>
         <!-- Protocol monitor -->
@@ -133,20 +133,20 @@
           <div id="envValue">production</div>
         </div>
 
-        <div class="console" id="console">Készen áll. Indíts egy demo módot.</div>
+        <div class="console" id="console">Ready. Select a demo mode to begin.</div>
 
         <details open>
-          <summary>Nyers utolsó válasz</summary>
+          <summary>Last raw response</summary>
           <div class="console" id="jsonBox">{}</div>
         </details>
 
         <details>
-          <summary>Használat</summary>
+          <summary>Usage</summary>
           <div class="hint">
-            Sandbox demo: nincs VFA session → gateway sandboxba route-ol.<br>
-            Deny demo: van VFA session, de nincs visa → gateway tilt.<br>
-            Production demo: session + intent után nyisd meg a walletet, majd approve vagy reject.<br>
-            A dashboard eseményvezérelten reagál, polling nélkül.
+            <strong>Sandbox demo:</strong> no VFA session — gateway routes to sandbox.<br>
+            <strong>Deny demo:</strong> VFA session exists but no visa — gateway blocks the request.<br>
+            <strong>Production demo:</strong> after session and intent are created, open the wallet and approve or reject.<br>
+            The dashboard reacts to wallet events automatically.
           </div>
         </details>
       </div>

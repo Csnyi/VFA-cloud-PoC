@@ -1,7 +1,12 @@
 vfa-cloud-poc/
 ├─ compose.yaml
-├─ .env
+├─ .env.example
 ├─ README.md
+├─ SECURITY.md
+├─ CONTRIBUTING.md
+├─ LICENSE
+├─ docs/
+│  └─ ARCHITECTURE.md
 ├─ policy-server/
 │  ├─ Dockerfile
 │  ├─ requirements.txt
@@ -14,8 +19,16 @@ vfa-cloud-poc/
 │  ├─ Dockerfile
 │  ├─ requirements.txt
 │  └─ app.py
+├─ sandbox-target/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ app.py
 ├─ wallet/
 │  ├─ index.html
-│  └─ wallet.js
+│  ├─ wallet.js
+│  ├─ wallet.css
+│  ├─ demo.html
+│  ├─ demo.js
+│  └─ demo.css
 └─ demo-client/
    └─ run_demo.sh

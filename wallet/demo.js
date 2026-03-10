@@ -259,7 +259,7 @@
     ========================================================= */
 
     async function createSession() {
-        protocolStep("SESSION_REQUEST", "Client → Gateway : VFA presence / connect kérés", ["client", "gateway"]);
+        protocolStep("SESSION_REQUEST", "Client → Gateway: VFA presence / connect request", ["client", "gateway"]);
 
         setNode("Client", "active");
         setNode("Gateway", "active");
@@ -296,13 +296,13 @@
             visa: state.token ? "issued" : "—"
         });
 
-        writeConsole(`Session létrejött: ${data.sessionId}`);
+        writeConsole(`Session created: ${data.sessionId}`);
         writeConsole(`VFA negotiation: ${data.status || (data.vfaAccepted ? "accepted" : "missing")}`);
         writeJson(data);
     }
 
     async function createIntent() {
-        protocolStep("INTENT_REQUEST", "Gateway / Client → Policy : intent kérés", ["gateway", "policy"]);
+        protocolStep("INTENT_REQUEST", "Gateway / Client → Policy: intent request", ["gateway", "policy"]);
 
         setNode("Policy", "active");
         setLine("GatewayPolicy", "active");
@@ -334,8 +334,8 @@
         updateButtons();
         startWalletResultWatch();
 
-        writeConsole(`Intent létrejött: ${data.intentId}`);
-        writeConsole("Policy → Wallet : jóváhagyás szükséges");
+        writeConsole(`Intent created: ${data.intentId}`);
+        writeConsole("Policy → Wallet: approval required");
         writeJson({ ...data, normalizedWalletUrl: state.walletUrl });
     }
 
@@ -350,7 +350,7 @@
         setLine("PolicyWallet", "ok");
         setLine("WalletPolicy", "active");
 
-        writeConsole("Approve a dashboardból…");
+        writeConsole("Approving from dashboard…");
 
         const data = await api(`${POLICY}/intent/${state.intentId}/approve`, {
             method: "POST",
@@ -384,7 +384,7 @@
 
     async function finishProduction() {
         if (!state.sessionId || !state.intentId || !state.token) {
-            writeConsole("Hiányzó session / intent / token.");
+            writeConsole("Missing session / intent / token.");
             return;
         }
 
@@ -395,7 +395,7 @@
         setNode("Prod", "active");
         setLine("GatewayProd", "active");
 
-        writeConsole("Gateway ellenőriz: valid visa → production route…");
+        writeConsole("Gateway verifying: valid visa → routing to production…");
 
         const data = await api(`${GATEWAY}/deploy`, {
             method: "POST",
@@ -426,7 +426,7 @@
         });
 
         writeConsole("Gateway → Production : deploy");
-        writeConsole("Eredmény: valid visa után a gateway a PRODUCTION targetre továbbított.");
+        writeConsole("Result: gateway routed request to PRODUCTION target after valid visa.");
         writeJson(data);
     }
 
@@ -437,7 +437,7 @@
     async function runSandbox() {
         hardReset("sandbox");
 
-        protocolStep("SANDBOX_REQUEST", "Client → Gateway : deploy kérés VFA nélkül", ["client", "gateway"]);
+        protocolStep("SANDBOX_REQUEST", "Client → Gateway: deploy request without VFA", ["client", "gateway"]);
 
         setNode("Client", "active");
         setNode("Gateway", "active");
@@ -480,7 +480,7 @@
         });
 
         writeConsole("Gateway → Sandbox : fallback route");
-        writeConsole("Eredmény: a kérés SANDBOX targetre került.");
+        writeConsole("Result: request routed to SANDBOX target.");
         writeJson(data);
     }
 
@@ -499,7 +499,7 @@
         setProtoState("DENY_REQUEST");
         setActorActive("gateway", "production");
 
-        writeConsole("Deny demo: van VFA session, de nincs visa. Most deploy kérés következik token nélkül…");
+        writeConsole("Deny demo: VFA session exists but no visa token. Sending deploy request without token…");
 
         const data = await api(`${GATEWAY}/deploy`, {
             method: "POST",
@@ -528,7 +528,7 @@
         });
 
         writeConsole("Gateway → Client : 403 / deny");
-        writeConsole("Eredmény: a gateway megtagadta a kérést, mert hiányzik a visa.");
+        writeConsole("Result: gateway denied the request — visa token missing.");
         writeJson(data);
     }
 
@@ -542,15 +542,15 @@
             visa: "—"
         });
 
-        writeConsole("Production flow indítása");
+        writeConsole("Starting production flow");
 
         await createSession();
         await createIntent();
         updateButtons();
 
-        writeConsole("Production demo előkészítve.");
-        writeConsole("Nyisd meg a walletet és approve-olj vagy rejectelj.");
-        writeConsole("A dashboard a wallet üzenetére automatikusan továbblép.");
+        writeConsole("Production demo ready.");
+        writeConsole("Open the wallet and approve or reject.");
+        writeConsole("Dashboard will automatically proceed on wallet response.");
     }
 
     /* =========================================================
@@ -567,7 +567,7 @@
 
         if (!isApproved && !isRejected) return;
 
-        writeConsole(`Wallet válasz érkezett (${source})`);
+        writeConsole(`Wallet response received (${source})`);
         writeConsole(JSON.stringify(msg));
 
         if (isApproved) {
@@ -660,13 +660,13 @@
             visa: "—"
         });
 
-        writeConsole("Készen áll. Indíts egy demo módot.");
+        writeConsole("Ready. Select a demo mode to begin.");
         writeJson({});
     }
 
     function showError(err) {
         const data = err && err.data ? err.data : { error: String(err) };
-        writeConsole("Hiba történt.");
+        writeConsole("An error occurred.");
         writeJson(data);
         console.error(err);
     }
@@ -699,8 +699,8 @@
         $("btnOpenWallet").addEventListener("click", () => {
             if (!state.walletUrl) return;
             window.open(state.walletUrl, "_blank", "noopener,noreferrer");
-            writeConsole(`Wallet megnyitva: ${state.walletUrl}`);
-            writeConsole("A dashboard a wallet eseményére vár.");
+            writeConsole(`Wallet opened: ${state.walletUrl}`);
+            writeConsole("Dashboard is waiting for wallet event.");
         });
     }
 

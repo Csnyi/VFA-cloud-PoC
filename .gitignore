@@ -33,10 +33,13 @@ pip-log.txt
 *.seed
 *.pid.lock
 
+<<<<<<< HEAD
 # local data
 # data/
 gateway/revocations.json
 
+=======
+>>>>>>> ffc50d7 (update en 260310.1556)
 # ========================
 # IDE
 # ========================
