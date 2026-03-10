@@ -33,12 +33,14 @@ before any backend executes.
 
 ---
 
-## Repositories
+## Related repositories
 
-- **VFA-cloud-PoC** — this repository: cloud operation PoC (deployment scenario)
-- **VFA-Spec** — protocol specification → https://github.com/Csnyi/VFA-Spec
+Implementation and demonstration projects:
+
 - **VFA-MVP** — wallet / merchant handshake reference implementation → https://github.com/Csnyi/VFA-MVP
 - **VFA-Lab** — gateway routing architecture sandbox → https://github.com/Csnyi/VFA-Lab
+- **VFA-cloud-PoC** — this repository: cloud operation PoC (deployment scenario)
+- **VFA-Spec** — protocol specification → https://github.com/Csnyi/VFA-Spec
 
 ---
 
