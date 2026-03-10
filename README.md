@@ -1,7 +1,9 @@
 # VFA-cloud-PoC
 
-Proof of concept implementation of the **Virtual Flow Agreement (VFA)** protocol
-applied to cloud operations.
+Proof-of-concept implementation of Virtual Flow Agreement (VFA) applied to cloud operations — verifying user intent before critical actions such as production deployments.
+
+> VFA-cloud-PoC demonstrates how critical cloud operations can be protected
+> by verifying user intent before execution using the Virtual Flow Agreement protocol.
 
 ![Status](https://img.shields.io/badge/status-proof--of--concept-orange)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
@@ -173,8 +175,16 @@ This repository focuses on **visualizing and validating the VFA protocol flow**.
 It is not a production-ready security implementation. See [SECURITY.md](SECURITY.md)
 for the full list of known limitations and what a production deployment would require.
 
+⚠ Do NOT use in production.
+
 ---
 
 ## License
 
 Apache-2.0 — see [LICENSE](LICENSE).
+
+---
+
+## Demo screenshot
+
+![Demo](docs/demo.png)

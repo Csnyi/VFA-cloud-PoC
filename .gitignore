@@ -5,6 +5,13 @@
 Thumbs.db
 
 # ========================
+# Environment
+# ========================
+.env
+.env.*
+!.env.example
+
+# ========================
 # Node
 # ========================
 node_modules/
@@ -20,9 +27,9 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
-.env
-.venv
+.venv/
 venv/
+env/
 pip-log.txt
 
 # ========================
@@ -33,13 +40,6 @@ pip-log.txt
 *.seed
 *.pid.lock
 
-<<<<<<< HEAD
-# local data
-# data/
-gateway/revocations.json
-
-=======
->>>>>>> ffc50d7 (update en 260310.1556)
 # ========================
 # IDE
 # ========================
