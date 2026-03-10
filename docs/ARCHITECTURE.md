@@ -22,34 +22,39 @@ human approval and cryptographic verification.
 
 ## Protocol flow
 
-```
-Client
-  │
-  ├─ POST /connect/request ──────────────────────────────► Gateway
-  │                                                           │
-  │  ◄─ { sessionId, vfaAccepted } ──────────────────────────┤
-  │                                                           │ proxies to
-  │                                                        Policy Server
-  │                                                           │
-  ├─ POST /intent/request ───────────────────────────────► Policy Server
-  │  ◄─ { intentId, walletUrl } ─────────────────────────────┤
-  │                                                           │
-  │  User opens wallet URL                                    │
-  │                                                        Wallet UI
-  │                                                           │ POST /intent/{id}/approve
-  │                                                        Policy Server
-  │                                                           │ issues visa token
-  │                                                           │
-  ├─ POST /deploy { sessionId, token, service, env, commit } ► Gateway
-  │                                                           │
-  │                                                     verify token
-  │                                                     check bindings
-  │                                                           │
-  │                                              ┌────────────┴────────────┐
-  │                                        valid visa              missing/invalid
-  │                                              │                         │
-  │                                       Deploy Target             Sandbox / Deny
-  │  ◄─ { gatewayDecision: "production" } ───────┘
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant G as Gateway
+    participant P as Policy Server
+    participant W as Wallet UI
+    participant D as Deploy Target
+    participant S as Sandbox / Deny
+
+    C->>G: POST /connect/request
+    G->>P: proxies to Policy Server
+    P-->>G: { sessionId, vfaAccepted }
+    G-->>C: { sessionId, vfaAccepted }
+
+    C->>P: POST /intent/request
+    P-->>C: { intentId, walletUrl }
+
+    Note over C,W: User opens wallet URL
+
+    W->>P: POST /intent/{id}/approve
+    Note over P: issues visa token
+
+    C->>G: POST /deploy { sessionId, token, service, env, commit }
+    Note over G: verify token, check bindings
+
+    alt valid visa
+        G->>D: forward request
+        D-->>G: ok
+        G-->>C: { gatewayDecision: "production" }
+    else missing / invalid
+        G->>S: route to sandbox or deny
+    end
 ```
 
 ### Gateway routing decisions
